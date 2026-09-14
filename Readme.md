@@ -22,7 +22,7 @@ It helps security researchers and developers quickly assess a website’s basic 
 ## 📦 Installation
 Clone the repository and install dependencies:
 ```bash
-git clone https://github.com/ChitranshShiv/ReconPy.git
+git clone https://github.com/chitranshshiv820-debug/ReconPy.git
 cd ReconPy
 pip install -r requirements.txt
 

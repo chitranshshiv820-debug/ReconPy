@@ -10,7 +10,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Chitransh",  # Replace with your name
     author_email="chitranshshiv820@gmail.com",  # Replace with your email
-    url="https://github.com/ChitranshShiv/ReconPy",  # Replace with your GitHub repo link
+    url="https://github.com/chitranshshiv820-debug/ReconPy",  # Replace with your GitHub repo link
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
