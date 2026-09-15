@@ -3,22 +3,21 @@ import csv
 
 def generate_report(results: dict, format: str = "json") -> None:
     """
-    Generate a security report from scan results.
-
-    Args:
-        results (dict): The findings from all modules.
-        format (str): Report format ("json" or "csv").
+    Create a security report from scan results.
+    Adds a simple score and saves the report
+    either as JSON or CSV.
     """
-    # Add a simple security score based on missing headers
-    score = calculate_score(results)
-    results["security_score"] = score
+
+    # Add a quick score based on header findings
+    results["security_score"] = calculate_score(results)
 
     if format == "json":
-        with open("report.json", "w") as f:
-            json.dump(results, f, indent=4)
+        with open("report.json", "w") as file:
+            json.dump(results, file, indent=4)
+
     elif format == "csv":
-        with open("report.csv", "w", newline="") as f:
-            writer = csv.writer(f)
+        with open("report.csv", "w", newline="") as file:
+            writer = csv.writer(file)
             writer.writerow(["Section", "Findings"])
             for section, data in results.items():
                 writer.writerow([section, data])
@@ -26,24 +25,21 @@ def generate_report(results: dict, format: str = "json") -> None:
 
 def calculate_score(results: dict) -> str:
     """
-    Calculate a simple security score based on HTTP header findings.
-
-    Args:
-        results (dict): The findings from all modules.
-
-    Returns:
-        str: Security rating ("High", "Medium", "Low").
+    Work out a simple rating based on HTTP headers.
+    Returns 'High', 'Medium', 'Low', or 'Unknown'.
     """
+
     headers = results.get("http", {})
+
     if "error" in headers:
         return "Unknown"
 
-    # Count missing headers
-    missing = sum(1 for v in headers.values() if v == "missing")
+    # Count how many headers are missing
+    missing_count = sum(1 for value in headers.values() if value == "missing")
 
-    if missing == 0:
+    if missing_count == 0:
         return "High"
-    elif missing <= 2:
+    elif missing_count <= 2:
         return "Medium"
     else:
         return "Low"

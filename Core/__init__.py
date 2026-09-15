@@ -1,7 +1,8 @@
-# core/__init__.py
 """
-Expose key scanning modules for easy import.
-This allows you to do: from core import check_http_headers, check_password_policy, etc.
+Core package initializer.
+
+This file collects the main functions from different modules
+so they can be imported directly from 'core'.
 """
 
 from .http_checks import check_http_headers
@@ -13,6 +14,7 @@ from .dns_checks import get_dns_records
 from .subdomain_enum import enumerate_subdomains
 from .breach_check import check_breach
 
+# Publicly available functions when using 'from core import *'
 __all__ = [
     "check_http_headers",
     "check_password_policy",
@@ -23,3 +25,4 @@ __all__ = [
     "enumerate_subdomains",
     "check_breach",
 ]
+

@@ -4,10 +4,11 @@ import yaml
 
 class ConfigLoader:
     """
-    Loads configuration settings from YAML or JSON files.
-    Example usage:
-        config = ConfigLoader("config.yaml")
-        api_key = config.get("shodan_api_key")
+    Simple config loader for YAML or JSON files.
+
+    Example:
+        cfg = ConfigLoader("config.yaml")
+        api_key = cfg.get("shodan_api_key")
     """
 
     def __init__(self, filepath: str):
@@ -23,20 +24,21 @@ class ConfigLoader:
 
         try:
             with open(self.filepath, "r", encoding="utf-8") as f:
-                if ext.lower() in [".yaml", ".yml"]:
+                if ext.lower() in (".yaml", ".yml"):
                     self.config = yaml.safe_load(f)
                 elif ext.lower() == ".json":
                     self.config = json.load(f)
                 else:
-                    raise ValueError("Unsupported config format. Use .yaml/.yml or .json")
+                    raise ValueError("Unsupported format. Use .yaml/.yml or .json")
 
+            # Handle empty files gracefully
             if self.config is None:
                 self.config = {}
-        except Exception as e:
-            raise RuntimeError(f"Error loading config: {e}")
+        except Exception as err:
+            raise RuntimeError(f"Error loading config: {err}")
 
     def get(self, key: str, default: object = None) -> object:
-        """Retrieve a config value by key, with optional default."""
+        """Return a config value by key, or default if missing."""
         return self.config.get(key, default)
 
     def all(self) -> dict:
@@ -44,5 +46,6 @@ class ConfigLoader:
         return self.config
 
     def reload(self):
-        """Reload the config file."""
+        """Reload the config file from disk."""
         self._load_config()
+

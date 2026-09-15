@@ -1,54 +1,24 @@
 import re
 
 def validate_url(url: str) -> str:
-    """
-    Validate that the provided string is a proper HTTP/HTTPS URL.
-
-    Args:
-        url (str): The target website URL.
-
-    Returns:
-        str: The validated URL.
-
-    Raises:
-        ValueError: If the URL is invalid.
-    """
-    pattern = re.compile(r"^(http|https)://[a-zA-Z0-9.-]+(:[0-9]+)?(/.*)?$")
-    if not pattern.match(url):
-        raise ValueError("URL must start with http:// or https:// and be properly formatted.")
+    """Check if the string looks like a valid HTTP/HTTPS URL."""
+    pattern = r"^(http|https)://[a-zA-Z0-9.-]+(:[0-9]+)?(/.*)?$"
+    if not re.match(pattern, url):
+        raise ValueError("Invalid URL. Must start with http:// or https://")
     return url
 
 
 def validate_email(email: str) -> str:
-    """
-    Validate that the provided string is a proper email address.
-
-    Args:
-        email (str): The email address to validate.
-
-    Returns:
-        str: The validated email.
-
-    Raises:
-        ValueError: If the email is invalid.
-    """
-    pattern = re.compile(r"^[\w\.-]+@[\w\.-]+\.\w+$")
-    if not pattern.match(email):
-        raise ValueError("Invalid email format.")
+    """Check if the string looks like a valid email address."""
+    pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+    if not re.match(pattern, email):
+        raise ValueError("Invalid email format")
     return email
 
 
 def sanitize_input(text: str) -> str:
-    """
-    Sanitize generic input to prevent injection or unsafe characters.
-
-    Args:
-        text (str): Input string.
-
-    Returns:
-        str: Sanitized string.
-    """
+    """Remove unsafe characters from input."""
     unsafe_chars = [';', '|', '&', '$', '>', '<', '"', "'", '`']
-    for char in unsafe_chars:
-        text = text.replace(char, "")
+    for ch in unsafe_chars:
+        text = text.replace(ch, "")
     return text.strip()

@@ -4,47 +4,43 @@ from datetime import datetime
 
 def check_ssl(url: str) -> dict:
     """
-    Check SSL/TLS certificate details for a given website.
-
-    Args:
-        url (str): The target website URL.
-
-    Returns:
-        dict: Certificate details including issuer and validity period.
+    Look at the SSL/TLS certificate for a given site.
+    Returns basic details like issuer, validity dates,
+    and whether the certificate is valid right now.
     """
-    findings = {}
+
+    details = {}
+
     try:
-        # Extract hostname from URL
+        # Pull out the hostname from the URL
         hostname = url.replace("https://", "").replace("http://", "").split("/")[0]
 
-        # Create SSL context
+        # Set up a secure connection
         context = ssl.create_default_context()
 
-        # Connect to server on port 443
+        # Connect to the server on port 443
         with socket.create_connection((hostname, 443), timeout=5) as sock:
-            with context.wrap_socket(sock, server_hostname=hostname) as ssock:
-                cert = ssock.getpeercert()
+            with context.wrap_socket(sock, server_hostname=hostname) as secure_sock:
+                cert = secure_sock.getpeercert()
 
-                # Extract issuer
-                issuer = dict(x[0] for x in cert.get("issuer", []))
-                findings["issuer"] = issuer.get("organizationName", "Unknown")
+                # Issuer information
+                issuer_info = dict(x[0] for x in cert.get("issuer", []))
+                details["issuer"] = issuer_info.get("organizationName", "Unknown")
 
-                # Extract validity dates
-                valid_from = cert.get("notBefore")
-                valid_to = cert.get("notAfter")
+                # Validity period
+                start_date = cert.get("notBefore")
+                end_date = cert.get("notAfter")
+                details["valid_from"] = start_date
+                details["valid_to"] = end_date
 
-                findings["valid_from"] = valid_from
-                findings["valid_to"] = valid_to
-
-                # Check if certificate is currently valid
+                # Check if certificate is valid at this moment
                 fmt = "%b %d %H:%M:%S %Y %Z"
-                start = datetime.strptime(valid_from, fmt)
-                end = datetime.strptime(valid_to, fmt)
+                start = datetime.strptime(start_date, fmt)
+                end = datetime.strptime(end_date, fmt)
                 now = datetime.utcnow()
+                details["is_valid_now"] = start <= now <= end
 
-                findings["is_valid_now"] = start <= now <= end
+    except Exception as error:
+        details["error"] = str(error)
 
-    except Exception as e:
-        findings["error"] = str(e)
-
-    return findings
+    return details

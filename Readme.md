@@ -1,28 +1,30 @@
 # 🔎 ReconPy
 
-ReconPy is an **OSINT-inspired website security scanner** written in Python.  
-It helps security researchers and developers quickly assess a website’s basic security posture by checking:
+ReconPy is a small Python tool inspired by OSINT techniques.  
+It helps check a website’s basic security posture by looking at things like:
 
-- ✅ HTTP security headers  
-- ✅ Password policy strength (baseline checks)  
-- ✅ SSL/TLS certificate validity  
-- ✅ JSON, CSV, or HTML report generation with a security score  
+- HTTP security headers  
+- Password policy strength (basic checks)  
+- SSL/TLS certificate validity  
+- Report generation (JSON, CSV, HTML) with a simple score  
 
 ---
 
 ## 🚀 Features
-- ASCII banner header for hacker‑tool vibe in Termux/Linux
+- ASCII banner for that hacker‑tool vibe (works in Termux/Linux)
 - CLI arguments for flexible usage (`--report`, `--debug`)
 - Logging with INFO/DEBUG levels
-- Clean JSON/CSV/HTML reports with a simple security rating
-- Modular design (`core/`, `utils/`, `tests/`) for easy extension
+- Clean reports in JSON/CSV/HTML
+- Modular design (`core/`, `utils/`, `tests/`) so it’s easy to extend
 
 ---
 
 ## 📦 Installation
-Clone the repository and install dependencies:
+Clone the repo and install dependencies:
+
 ```bash
 git clone https://github.com/chitranshshiv820-debug/ReconPy.git
 cd ReconPy
 pip install -r requirements.txt
+
 

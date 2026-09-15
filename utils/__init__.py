@@ -1,6 +1,10 @@
 """
 Utility package initializer.
-Exposes helper modules for configuration, logging, and validation.
+
+Makes helper modules easy to import:
+- ConfigLoader for loading configs
+- get_logger for centralized logging
+- validate_url and validate_email for input checks
 """
 
 from .config import ConfigLoader
@@ -13,5 +17,6 @@ __all__ = [
     "validate_url",
     "validate_email",
 ]
+
 
 

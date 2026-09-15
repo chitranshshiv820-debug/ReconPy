@@ -1,14 +1,25 @@
 import dns.resolver
 
 def get_dns_records(domain: str) -> dict:
-    records = {}
+    """
+    Try to fetch some basic DNS records (MX, TXT, NS) for a given domain.
+    Returns a dictionary with record types as keys.
+    If something goes wrong, an error message is returned instead.
+    """
+
+    results = {}
+
     try:
         for record_type in ["MX", "TXT", "NS"]:
             try:
                 answers = dns.resolver.resolve(domain, record_type)
-                records[record_type] = [str(r) for r in answers]
+                results[record_type] = [str(item) for item in answers]
             except Exception:
-                records[record_type] = []
-        return records
-    except Exception as e:
-        return {"error": str(e)}
+                # If this record type fails, just store an empty list
+                results[record_type] = []
+        return results
+    except Exception as error:
+        return {
+            "error": str(error)
+        }
+

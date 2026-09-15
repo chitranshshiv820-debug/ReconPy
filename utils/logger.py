@@ -2,30 +2,31 @@ import logging
 
 def get_logger(name: str = "scanner", level: int = logging.INFO, log_file: str = None) -> logging.Logger:
     """
-    Configure and return a logger instance.
+    Create and return a logger.
 
     Args:
-        name (str): Name of the logger (default: "scanner").
-        level (int): Logging level (default: logging.INFO).
-        log_file (str): Optional file path to also log messages.
+        name (str): Logger name (default: "scanner").
+        level (int): Logging level (default: INFO).
+        log_file (str): Optional file path for log output.
 
     Returns:
-        logging.Logger: Configured logger object.
+        logging.Logger: Configured logger instance.
     """
     logger = logging.getLogger(name)
 
-    if not logger.handlers:  # Prevent duplicate handlers if called multiple times
+    # Avoid adding handlers multiple times
+    if not logger.handlers:
         formatter = logging.Formatter(
             "%(asctime)s - %(levelname)s - %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S"
         )
 
-        # Console handler
-        handler = logging.StreamHandler()
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
+        # Console output
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
 
-        # Optional file handler
+        # Optional file output
         if log_file:
             file_handler = logging.FileHandler(log_file)
             file_handler.setFormatter(formatter)
